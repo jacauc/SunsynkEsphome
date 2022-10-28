@@ -32,14 +32,15 @@ ota:
 
 captive_portal:
 
-esp32_ble_tracker:
-  scan_parameters:
-    active: true
-bluetooth_proxy:   
-  active: true
+#esp32_ble_tracker:
+#  scan_parameters:
+#    active: true
+#bluetooth_proxy:   
+#  active: true
 
 # Enable logging
 logger:
+  baud_rate: 0
 
 # Enable Home Assistant API
 api:
@@ -50,6 +51,8 @@ api:
 time:
   - platform: homeassistant
     id: homeassistant_time
+
+
 #################################### STATIC SECTION ####################################
 
 uart:
