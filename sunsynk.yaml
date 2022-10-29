@@ -75,8 +75,8 @@ modbus_controller:
  - id: sunsynk_esphome_settings
    address: 0x01
    modbus_id: sunsynk_modbus
-   setup_priority: -10
-   update_interval: 600000ms
+   setup_priority: -5
+   update_interval: 603000ms
  
 sensor: 
  - platform: modbus_controller          #72 Battery Charge Total
@@ -110,7 +110,7 @@ sensor:
     - lambda: |-
            x = x / 1;
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /10;
+           if (x > MAX_VALUE) return (x - 65535) /10;
            else return (x) /10;
 
 # - platform: modbus_controller          # 81 Grid Export Total (Sell)
@@ -127,7 +127,7 @@ sensor:
 #    - lambda: |-
 #           x = x / 1;
 #           float MAX_VALUE = 32767;
-#           if (x > MAX_VALUE) return (0 - 65535) / 10;
+#           if (x > MAX_VALUE) return (x - 65535) / 10;
 #           else return x /10;
 
  - platform: modbus_controller          # 78 Grid Import Total (Buy)
@@ -190,9 +190,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 178 Load Power
@@ -207,9 +207,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
 
@@ -247,9 +247,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 216 Battery Charging Efficiency
@@ -264,9 +264,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /10;
+           if (x > MAX_VALUE) return (x - 65535) /10;
            else return (x) /10;
 
  - platform: modbus_controller          # 194 Grid Connected Status
@@ -308,9 +308,9 @@ sensor:
    accuracy_decimals: 2
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /100;
+           if (x > MAX_VALUE) return (x - 65535) /100;
            else return (x) /100;
    #device_class: none
    state_class: measurement
@@ -330,7 +330,7 @@ sensor:
      - lambda: |-
            x = x / 1;
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /10;
+           if (x > MAX_VALUE) return (x - 65535) /10;
            else return (x) /10;
    device_class: voltage
    state_class: measurement
@@ -347,7 +347,7 @@ sensor:
      - lambda: |-
            x = x / 1;
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /10;
+           if (x > MAX_VALUE) return (x - 65535) /10;
            else return (x) /10;
    device_class: voltage
    state_class: measurement
@@ -364,7 +364,7 @@ sensor:
    accuracy_decimals: 1
    filters: #GOOD
      - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
            if (x > MAX_VALUE) return (x - 65535) / 100;
            else return x / 100;
@@ -405,7 +405,7 @@ sensor:
      - lambda: |-
            x = x / 1;
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
    device_class: power
    state_class: measurement
@@ -444,7 +444,7 @@ sensor:
    state_class: measurement
    filters: # GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
            if (x > MAX_VALUE) return ((x - 65535)-1000) / 10;
            else return ((x)-1000) / 10;
@@ -476,7 +476,7 @@ sensor:
    state_class: measurement
    filters: # GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
            if (x > MAX_VALUE) return ((x - 65535)-1000) / 10;
            else return ((x)-1000) / 10;
@@ -493,7 +493,7 @@ sensor:
    state_class: measurement
    filters: # GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
            if (x > MAX_VALUE) return ((x - 65535)-1000) / 10;
            else return ((x)-1000) / 10;
@@ -512,7 +512,7 @@ sensor:
     - lambda: |-
            x = x / 1;
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) / 10;
+           if (x > MAX_VALUE) return (x - 65535) / 10;
            else return x /10;
 
  - platform: modbus_controller          # 070 Battery Charge Day
@@ -529,7 +529,7 @@ sensor:
     - lambda: |-
            x = x / 10;
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
 
@@ -547,7 +547,7 @@ sensor:
     - lambda: |-
            x = x / 10;
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
 
@@ -562,7 +562,7 @@ sensor:
    device_class: power
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
            if (x > MAX_VALUE) return (0 - x + 65535) /-1;
            else return (0 - x) /-1;
@@ -577,9 +577,9 @@ sensor:
    address: 250
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 251 Settings Timezone2
@@ -590,9 +590,9 @@ sensor:
    address: 251
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 252 Settings Timezone3
@@ -603,9 +603,9 @@ sensor:
    address: 252
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 253 Settings Timezone4
@@ -616,9 +616,9 @@ sensor:
    address: 253
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 254 Settings Timezone5
@@ -629,9 +629,9 @@ sensor:
    address: 254
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 255 Settings Timezone6
@@ -642,9 +642,9 @@ sensor:
    address: 255
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
 
@@ -656,9 +656,9 @@ sensor:
    address: 268
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 269 Settings SoC Timezone2
@@ -669,9 +669,9 @@ sensor:
    address: 269
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 270 Settings SoC Timezone3
@@ -682,9 +682,9 @@ sensor:
    address: 270
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 271 Settings SoC Timezone4
@@ -695,9 +695,9 @@ sensor:
    address: 271
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 272 Settings SoC Timezone5
@@ -708,9 +708,9 @@ sensor:
    address: 272
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 273 Settings SoC Timezone6
@@ -721,9 +721,9 @@ sensor:
    address: 273
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
 
@@ -736,9 +736,9 @@ sensor:
    address: 256
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 257 Settings Sell Mode Timezone2
@@ -749,9 +749,9 @@ sensor:
    address: 257
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 258 Settings Sell Mode Timezone3
@@ -762,9 +762,9 @@ sensor:
    address: 258
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 259 Settings Sell Mode Timezone4
@@ -775,9 +775,9 @@ sensor:
    address: 259
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 260 Settings Sell Mode Timezone5
@@ -788,9 +788,9 @@ sensor:
    address: 260
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 261 Settings Sell Mode Timezone6
@@ -801,9 +801,9 @@ sensor:
    address: 261
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
 
@@ -905,9 +905,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
            
  - platform: modbus_controller          # 217 Settings Battery Shutdown
@@ -921,9 +921,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 219 Settings Battery Low
@@ -937,9 +937,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 218 Settings Battery Restart
@@ -953,9 +953,9 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 210 Settings Battery Max Charge Current
@@ -969,9 +969,9 @@ sensor:
    unit_of_measurement: "A"   
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 211 Settings Battery Max Discharge Current
@@ -985,9 +985,9 @@ sensor:
    unit_of_measurement: "A"   
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;
 
  
@@ -1002,7 +1002,7 @@ sensor:
    unit_of_measurement: "A"   
    filters: #GOOD
     - lambda: |-
-           x = x /1;
+
            float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - 65535) /1;
+           if (x > MAX_VALUE) return (x - 65535) /1;
            else return (x) /1;           
