@@ -72,6 +72,11 @@ modbus_controller:
    modbus_id: sunsynk_modbus
    setup_priority: -10
    update_interval: 5000ms
+ - id: sunsynk_esphome_settings
+   address: 0x01
+   modbus_id: sunsynk_modbus
+   setup_priority: -10
+   update_interval: 600000ms
  
 sensor: 
  - platform: modbus_controller          #72 Battery Charge Total
@@ -563,9 +568,9 @@ sensor:
            else return (0 - x) /-1;
 
 
-##### READ SETTINGS ######
+##### READ SETTINGS ################################################
  - platform: modbus_controller          # 250 Settings Timezone1
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Timezone1"
    id: sunsynk_esphome_setting_timezone1
    register_type: holding
@@ -578,7 +583,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 251 Settings Timezone2
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Timezone2"
    id: sunsynk_esphome_setting_timezone2
    register_type: holding
@@ -591,7 +596,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 252 Settings Timezone3
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Timezone3"
    id: sunsynk_esphome_setting_timezone3
    register_type: holding
@@ -604,7 +609,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 253 Settings Timezone4
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Timezone4"
    id: sunsynk_esphome_setting_timezone4
    register_type: holding
@@ -617,7 +622,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 254 Settings Timezone5
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Timezone5"
    id: sunsynk_esphome_setting_timezone5
    register_type: holding
@@ -630,7 +635,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 255 Settings Timezone6
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Timezone6"
    id: sunsynk_esphome_setting_timezone6
    register_type: holding
@@ -644,7 +649,7 @@ sensor:
 
 
  - platform: modbus_controller          # 268 Settings SoC Timezone1
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting SoC Timezone1"
    id: sunsynk_esphome_setting_soc_timezone1
    register_type: holding
@@ -657,7 +662,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 269 Settings SoC Timezone2
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting SoC Timezone2"
    id: sunsynk_esphome_setting_soc_timezone2
    register_type: holding
@@ -670,7 +675,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 270 Settings SoC Timezone3
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting SoC Timezone3"
    id: sunsynk_esphome_setting_soc_timezone3
    register_type: holding
@@ -683,7 +688,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 271 Settings SoC Timezone4
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting SoC Timezone4"
    id: sunsynk_esphome_setting_soc_timezone4
    register_type: holding
@@ -696,7 +701,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 272 Settings SoC Timezone5
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting SoC Timezone5"
    id: sunsynk_esphome_setting_soc_timezone5
    register_type: holding
@@ -709,7 +714,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 273 Settings SoC Timezone6
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting SoC Timezone6"
    id: sunsynk_esphome_setting_soc_timezone6
    register_type: holding
@@ -724,7 +729,7 @@ sensor:
 
 
  - platform: modbus_controller          # 256 Settings Sell Mode Timezone1
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Sell Mode Timezone1"
    id: sunsynk_esphome_setting_sellmode_timezone1
    register_type: holding
@@ -737,7 +742,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 257 Settings Sell Mode Timezone2
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Sell Mode Timezone2"
    id: sunsynk_esphome_setting_sellmode_timezone2
    register_type: holding
@@ -750,7 +755,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 258 Settings Sell Mode Timezone3
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Sell Mode Timezone3"
    id: sunsynk_esphome_setting_sellmode_timezone3
    register_type: holding
@@ -763,7 +768,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 259 Settings Sell Mode Timezone4
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Sell Mode Timezone4"
    id: sunsynk_esphome_setting_sellmode_timezone4
    register_type: holding
@@ -776,7 +781,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 260 Settings Sell Mode Timezone5
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Sell Mode Timezone5"
    id: sunsynk_esphome_setting_sellmode_timezone5
    register_type: holding
@@ -789,7 +794,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 261 Settings Sell Mode Timezone6
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Sell Mode Timezone6"
    id: sunsynk_esphome_setting_sellmode_timezone6
    register_type: holding
@@ -805,42 +810,42 @@ sensor:
 
 
  - platform: modbus_controller          # 274 Settings Grid Charge Timezone1
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Timezone1"
    id: sunsynk_esphome_setting_grid_charge_timezone1
    register_type: holding
    address: 274
 
  - platform: modbus_controller          # 275 Settings Grid Charge Timezone2
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Timezone2"
    id: sunsynk_esphome_setting_grid_charge_timezone2
    register_type: holding
    address: 275
    
  - platform: modbus_controller          # 276 Settings Grid Charge Timezone3
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Timezone3"
    id: sunsynk_esphome_setting_grid_charge_timezone3
    register_type: holding
    address: 276
    
  - platform: modbus_controller          # 277 Settings Grid Charge Timezone4
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Timezone4"
    id: sunsynk_esphome_setting_grid_charge_timezone4
    register_type: holding
    address: 277
    
  - platform: modbus_controller          # 278 Settings Grid Charge Timezone5
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Timezone5"
    id: sunsynk_esphome_setting_grid_charge_timezone5
    register_type: holding
    address: 278
    
  - platform: modbus_controller          # 279 Settings Grid Charge Timezone6
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Timezone6"
    id: sunsynk_esphome_setting_grid_charge_timezone6
    register_type: holding
@@ -850,28 +855,28 @@ sensor:
 
 
  - platform: modbus_controller          # 232 Settings Battery Grid Charge Enabled
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Battery Grid Charge Enabled"
    id: sunsynk_esphome_setting_battery_grid_charge_enabled
    register_type: holding
    address: 232
 
  - platform: modbus_controller          # 243 Settings Energy Management Model (PL)
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Energy Management Model"
    id: sunsynk_esphome_setting_energy_management_model
    register_type: holding
    address: 243
 
  - platform: modbus_controller          # 247 Settings Solar Export Enabled
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Solar Export Enabled"
    id: sunsynk_esphome_setting_solar_export_enabled
    register_type: holding
    address: 247
 
  - platform: modbus_controller          # 248 Settings Use Timer Enabled
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Use Timer Enabled"
    id: sunsynk_esphome_setting_use_timer_enabled
    register_type: holding
@@ -882,7 +887,7 @@ sensor:
            else return (1);
 
  - platform: modbus_controller          # 244 Settings Load Limit
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Load Limit"
    id: sunsynk_esphome_setting_load_limit
    register_type: holding
@@ -890,7 +895,7 @@ sensor:
 
            
  - platform: modbus_controller          # 245 Settings Export Limit
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Export Limit"
    id: sunsynk_esphome_setting_export_limit
    register_type: holding
@@ -906,7 +911,7 @@ sensor:
            else return (x) /1;
            
  - platform: modbus_controller          # 217 Settings Battery Shutdown
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Battery Shutdown"
    id: sunsynk_esphome_setting_battery_shutdown
    register_type: holding
@@ -922,7 +927,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 219 Settings Battery Low
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Battery Low"
    id: sunsynk_esphome_setting_battery_low
    register_type: holding
@@ -938,7 +943,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 218 Settings Battery Restart
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Battery Restart"
    id: sunsynk_esphome_setting_battery_restart
    register_type: holding
@@ -954,7 +959,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 210 Settings Battery Max Charge Current
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Battery Max Charge Current"
    id: sunsynk_esphome_setting_battery_max_charge_current
    register_type: holding
@@ -970,7 +975,7 @@ sensor:
            else return (x) /1;
 
  - platform: modbus_controller          # 211 Settings Battery Max Discharge Current
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Max Discharge Current"
    id: sunsynk_esphome_setting_battery_max_discharge_current
    register_type: holding
@@ -987,7 +992,7 @@ sensor:
 
  
  - platform: modbus_controller          # 230 Settings Grid Charge Current
-   modbus_controller_id: sunsynk_esphome
+   modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Current"
    id: sunsynk_esphome_setting_grid_charge_current
    register_type: holding
