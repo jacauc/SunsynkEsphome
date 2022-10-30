@@ -8,7 +8,7 @@ esp32:
 
 #################################### GLOBALS ####################################
 substitutions:
-  modbus_update_interval: "10s"
+  modbus_update_interval: "3s"
   settings_skipped_updates: "10"
   query_throttle: "50ms"
 
@@ -247,25 +247,6 @@ sensor:
     - lambda: |-
            if (x > 32767) return (x - 65535) /10;
            else return (x) /10;
-
- - platform: modbus_controller          # 194 Grid Connected Status
-   modbus_controller_id: sunsynk_esphome
-   name: "SS Grid Connected Status"
-   id: sunsynk_esphome_grid_connected_status
-   register_type: holding
-   address: 194
-   accuracy_decimals: 0
-   filters: 
-    - lambda: |-
-           if (x == 0) return 0;
-           else return 1;
-
- - platform: modbus_controller          # 059 Overall State
-   modbus_controller_id: sunsynk_esphome
-   name: "SS Overall State"
-   id: sunsynk_esphome_overall_state
-   register_type: holding
-   address: 59
 
  - platform: modbus_controller          # 013 Firmware Control Board
    modbus_controller_id: sunsynk_esphome
@@ -513,7 +494,7 @@ sensor:
    name: "SSS Setting Timezone1"
    id: sunsynk_esphome_setting_timezone1
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 250
    filters: #GOOD
     - lambda: |-
@@ -525,7 +506,7 @@ sensor:
    name: "SSS Setting Timezone2"
    id: sunsynk_esphome_setting_timezone2
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 251
    filters: #GOOD
     - lambda: |-
@@ -537,7 +518,7 @@ sensor:
    name: "SSS Setting Timezone3"
    id: sunsynk_esphome_setting_timezone3
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 252
    filters: #GOOD
     - lambda: |-
@@ -549,7 +530,7 @@ sensor:
    name: "SSS Setting Timezone4"
    id: sunsynk_esphome_setting_timezone4
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 253
    filters: #GOOD
     - lambda: |-
@@ -561,7 +542,7 @@ sensor:
    name: "SSS Setting Timezone5"
    id: sunsynk_esphome_setting_timezone5
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 254
    filters: #GOOD
     - lambda: |-
@@ -573,7 +554,7 @@ sensor:
    name: "SSS Setting Timezone6"
    id: sunsynk_esphome_setting_timezone6
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 255
    filters: #GOOD
     - lambda: |-
@@ -585,7 +566,7 @@ sensor:
    name: "SSS Setting SoC Timezone1"
    id: sunsynk_esphome_setting_soc_timezone1
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 268
    filters: #GOOD
     - lambda: |-
@@ -597,7 +578,7 @@ sensor:
    name: "SSS Setting SoC Timezone2"
    id: sunsynk_esphome_setting_soc_timezone2
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 269
    filters: #GOOD
     - lambda: |-
@@ -609,7 +590,7 @@ sensor:
    name: "SSS Setting SoC Timezone3"
    id: sunsynk_esphome_setting_soc_timezone3
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 270
    filters: #GOOD
     - lambda: |-
@@ -621,7 +602,7 @@ sensor:
    name: "SSS Setting SoC Timezone4"
    id: sunsynk_esphome_setting_soc_timezone4
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 271
    filters: #GOOD
     - lambda: |-
@@ -633,7 +614,7 @@ sensor:
    name: "SSS Setting SoC Timezone5"
    id: sunsynk_esphome_setting_soc_timezone5
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 272
    filters: #GOOD
     - lambda: |-
@@ -645,7 +626,7 @@ sensor:
    name: "SSS Setting SoC Timezone6"
    id: sunsynk_esphome_setting_soc_timezone6
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 273
    filters: #GOOD
     - lambda: |-
@@ -657,7 +638,7 @@ sensor:
    name: "SSS Setting Sell Mode Timezone1"
    id: sunsynk_esphome_setting_sellmode_timezone1
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 256
    filters: #GOOD
     - lambda: |-
@@ -669,7 +650,7 @@ sensor:
    name: "SSS Setting Sell Mode Timezone2"
    id: sunsynk_esphome_setting_sellmode_timezone2
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 257
    filters: #GOOD
     - lambda: |-
@@ -681,7 +662,7 @@ sensor:
    name: "SSS Setting Sell Mode Timezone3"
    id: sunsynk_esphome_setting_sellmode_timezone3
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 258
    filters: #GOOD
     - lambda: |-
@@ -693,7 +674,7 @@ sensor:
    name: "SSS Setting Sell Mode Timezone4"
    id: sunsynk_esphome_setting_sellmode_timezone4
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 259
    filters: #GOOD
     - lambda: |-
@@ -705,7 +686,7 @@ sensor:
    name: "SSS Setting Sell Mode Timezone5"
    id: sunsynk_esphome_setting_sellmode_timezone5
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 260
    filters: #GOOD
     - lambda: |-
@@ -717,110 +698,19 @@ sensor:
    name: "SSS Setting Sell Mode Timezone6"
    id: sunsynk_esphome_setting_sellmode_timezone6
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 261
    filters: #GOOD
     - lambda: |-
            if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
- - platform: modbus_controller          # 274 Settings Grid Charge Timezone1
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Grid Charge Timezone1"
-   id: sunsynk_esphome_setting_grid_charge_timezone1
-   register_type: holding
-   skip_updates: 10
-   address: 274
-
- - platform: modbus_controller          # 275 Settings Grid Charge Timezone2
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Grid Charge Timezone2"
-   id: sunsynk_esphome_setting_grid_charge_timezone2
-   register_type: holding
-   skip_updates: 10
-   address: 275
-   
- - platform: modbus_controller          # 276 Settings Grid Charge Timezone3
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Grid Charge Timezone3"
-   id: sunsynk_esphome_setting_grid_charge_timezone3
-   register_type: holding
-   skip_updates: 10
-   address: 276
-   
- - platform: modbus_controller          # 277 Settings Grid Charge Timezone4
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Grid Charge Timezone4"
-   id: sunsynk_esphome_setting_grid_charge_timezone4
-   register_type: holding
-   skip_updates: 10
-   address: 277
-   
- - platform: modbus_controller          # 278 Settings Grid Charge Timezone5
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Grid Charge Timezone5"
-   id: sunsynk_esphome_setting_grid_charge_timezone5
-   register_type: holding
-   skip_updates: 10
-   address: 278
-   
- - platform: modbus_controller          # 279 Settings Grid Charge Timezone6
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Grid Charge Timezone6"
-   id: sunsynk_esphome_setting_grid_charge_timezone6
-   register_type: holding
-   skip_updates: 10
-   address: 279
-
- - platform: modbus_controller          # 232 Settings Battery Grid Charge Enabled
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Battery Grid Charge Enabled"
-   id: sunsynk_esphome_setting_battery_grid_charge_enabled
-   register_type: holding
-   skip_updates: 10
-   address: 232
-
- - platform: modbus_controller          # 243 Settings Energy Management Model (PL)
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Energy Management Model"
-   id: sunsynk_esphome_setting_energy_management_model
-   register_type: holding
-   skip_updates: 10
-   address: 243
-
- - platform: modbus_controller          # 247 Settings Solar Export Enabled
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Solar Export Enabled"
-   id: sunsynk_esphome_setting_solar_export_enabled
-   register_type: holding
-   skip_updates: 10
-   address: 247
-
- - platform: modbus_controller          # 248 Settings Use Timer Enabled
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Use Timer Enabled"
-   id: sunsynk_esphome_setting_use_timer_enabled
-   register_type: holding
-   skip_updates: 10
-   address: 248
-   filters: #GOOD
-    - lambda: |-
-           return x-254;
-
- - platform: modbus_controller          # 244 Settings Load Limit
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Load Limit"
-   id: sunsynk_esphome_setting_load_limit
-   register_type: holding
-   skip_updates: 10
-   address: 244
-           
  - platform: modbus_controller          # 245 Settings Export Limit
    modbus_controller_id: sunsynk_esphome
    name: "SSS Setting Export Limit"
    id: sunsynk_esphome_setting_export_limit
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 245
    unit_of_measurement: "W"
    device_class: power
@@ -835,7 +725,7 @@ sensor:
    name: "SSS Setting Battery Shutdown"
    id: sunsynk_esphome_setting_battery_shutdown
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 217
    unit_of_measurement: "%"
    device_class: battery
@@ -850,7 +740,7 @@ sensor:
    name: "SSS Setting Battery Low"
    id: sunsynk_esphome_setting_battery_low
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 219
    unit_of_measurement: "%"
    device_class: battery
@@ -865,7 +755,7 @@ sensor:
    name: "SSS Setting Battery Restart"
    id: sunsynk_esphome_setting_battery_restart
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 218
    unit_of_measurement: "%"
    device_class: battery
@@ -880,7 +770,7 @@ sensor:
    name: "SSS Setting Battery Max Charge Current"
    id: sunsynk_esphome_setting_battery_max_charge_current
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 210
    device_class: current
    state_class: measurement
@@ -895,7 +785,7 @@ sensor:
    name: "SSS Setting Max Discharge Current"
    id: sunsynk_esphome_setting_battery_max_discharge_current
    register_type: holding
-   skip_updates: 10
+   skip_updates: ${settings_skipped_updates}
    address: 211
    device_class: current
    state_class: measurement
@@ -919,3 +809,138 @@ sensor:
     - lambda: |-
            if (x > 32767) return (x - 65535) /1;
            else return (x) /1;           
+
+
+
+############################################### BINARY SENSORS ###############################################
+binary_sensor:
+ - platform: modbus_controller          # 194 Grid Connected Status
+   modbus_controller_id: sunsynk_esphome
+   name: "SS Grid Connected Status"
+   id: sunsynk_esphome_grid_connected_status
+   register_type: holding
+   address: 194
+
+
+
+############################################### BINARY SENSORS SETTINGS ###############################################  
+
+ - platform: modbus_controller          # 248 Settings Use Timer Enabled
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Use Timer Enabled"
+   id: sunsynk_esphome_setting_use_timer_enabled
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 248
+   bitmask: 1
+
+ - platform: modbus_controller          # 244 Settings Load Limit Enabled
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Load Limit Enabled"
+   id: sunsynk_esphome_setting_load_limit2
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 244
+
+ - platform: modbus_controller          # 274 Settings Grid Charge Timezone1
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Grid Charge Timezone1"
+   id: sunsynk_esphome_setting_grid_charge_timezone1
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 274
+
+ - platform: modbus_controller          # 275 Settings Grid Charge Timezone2
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Grid Charge Timezone2"
+   id: sunsynk_esphome_setting_grid_charge_timezone2
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 275
+   
+ - platform: modbus_controller          # 276 Settings Grid Charge Timezone3
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Grid Charge Timezone3"
+   id: sunsynk_esphome_setting_grid_charge_timezone3
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 276
+   
+ - platform: modbus_controller          # 277 Settings Grid Charge Timezone4
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Grid Charge Timezone4"
+   id: sunsynk_esphome_setting_grid_charge_timezone4
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 277
+   
+ - platform: modbus_controller          # 278 Settings Grid Charge Timezone5
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Grid Charge Timezone5"
+   id: sunsynk_esphome_setting_grid_charge_timezone5
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 278
+   
+ - platform: modbus_controller          # 279 Settings Grid Charge Timezone6
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Grid Charge Timezone6"
+   id: sunsynk_esphome_setting_grid_charge_timezone6
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 279
+
+ - platform: modbus_controller          # 247 Settings Solar Export Enabled
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Solar Export Enabled"
+   id: sunsynk_esphome_setting_solar_export_enabled
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 247
+
+ - platform: modbus_controller          # 232 Settings Battery Grid Charge Enabled
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Battery Grid Charge Enabled"
+   id: sunsynk_esphome_setting_battery_grid_charge_enabled
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 232
+
+
+############################################### TEXT SENSORS SETTINGS ############################################### 
+text_sensor:
+ - platform: modbus_controller          # 243 Settings Energy Management Model (PL)
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Energy Management Model"
+   id: sunsynk_esphome_setting_energy_management_model
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   raw_encode: HEXBYTES
+   address: 243
+   lambda: |-
+      uint16_t value = modbus_controller::word_from_hex_str(x, 0);
+      switch (value) {
+        case 0: return std::string("Battery Priority Mode");
+        case 1: return std::string("Load First Mode");
+        default: return std::string("Unknown");
+      }
+
+ - platform: modbus_controller          # 059 Overall State
+   modbus_controller_id: sunsynk_esphome
+   name: "SS Overall State"
+   id: sunsynk_esphome_overall_state
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   raw_encode: HEXBYTES
+   address: 59
+   lambda: |- # It is not clear what each of these states mean. TODO Fill in the string values once known
+      uint16_t value = modbus_controller::word_from_hex_str(x, 0);
+      switch (value) {
+        case 0: return std::string("0");
+        case 1: return std::string("1");
+        case 2: return std::string("2");
+        case 3: return std::string("3");
+        case 4: return std::string("4");
+        case 5: return std::string("5");
+        default: return std::string("Unknown");
+      }
