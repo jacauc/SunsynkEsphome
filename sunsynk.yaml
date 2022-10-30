@@ -32,12 +32,6 @@ ota:
 
 captive_portal:
 
-#esp32_ble_tracker:
-#  scan_parameters:
-#    active: true
-#bluetooth_proxy:   
-#  active: true
-
 # Enable logging
 logger:
   baud_rate: 0
@@ -46,7 +40,6 @@ logger:
 api:
   password: !secret esphome_api_password
 
-# Enable time component to reset energy at midnight
 # https://esphome.io/components/time.html#home-assistant-time-source
 time:
   - platform: homeassistant
@@ -71,7 +64,7 @@ modbus_controller:
    address: 0x01
    modbus_id: sunsynk_modbus
    setup_priority: -10
-   update_interval: 5000ms
+   update_interval: 10000ms
  - id: sunsynk_esphome_settings
    address: 0x01
    modbus_id: sunsynk_modbus
@@ -92,8 +85,7 @@ sensor:
    filters:
     - lambda: |-
            x = x / -1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - x + 65535) /10;
+           if (x > 32767) return (0 - x + 65535) /10;
            else return (0 - x) /10;
 
  - platform: modbus_controller          #74 Battery Discharge Total
@@ -108,9 +100,7 @@ sensor:
    state_class: total_increasing
    filters:
     - lambda: |-
-           x = x / 1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /10;
+           if (x > 32767) return (x - 65535) /10;
            else return (x) /10;
 
 # - platform: modbus_controller          # 81 Grid Export Total (Sell)
@@ -125,9 +115,7 @@ sensor:
 #   state_class: total_increasing
 #   filters:
 #    - lambda: |-
-#           x = x / 1;
-#           float MAX_VALUE = 32767;
-#           if (x > MAX_VALUE) return (x - 65535) / 10;
+#           if (x > 32767) return (x - 65535) / 10;
 #           else return x /10;
 
  - platform: modbus_controller          # 78 Grid Import Total (Buy)
@@ -143,8 +131,7 @@ sensor:
    filters: #GOOD
     - lambda: |-
            x = x / -1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - x + 65535) /1;
+           if (x > 32767) return (0 - x + 65535) /1;
            else return (0 - x) /1;
 
  - platform: modbus_controller          # 85 Load Power Total
@@ -159,9 +146,7 @@ sensor:
    state_class: total_increasing
    filters: #GOOD
     - lambda: |-
-           x = x / 1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - x + 65535) /1;
+           if (x > 32767) return (0 - x + 65535) /1;
            else return (0 - x) /1;
 
 
@@ -190,9 +175,7 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 178 Load Power
@@ -207,11 +190,8 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
-
 
 # - platform: modbus_controller
 #   modbus_controller_id: sunsynk_esphome
@@ -247,9 +227,7 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 216 Battery Charging Efficiency
@@ -264,9 +242,7 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /10;
+           if (x > 32767) return (x - 65535) /10;
            else return (x) /10;
 
  - platform: modbus_controller          # 194 Grid Connected Status
@@ -276,6 +252,10 @@ sensor:
    register_type: holding
    address: 194
    accuracy_decimals: 0
+   filters: 
+    - lambda: |-
+           if (x == 0) return 0;
+           else return 1;
 
  - platform: modbus_controller          # 059 Overall State
    modbus_controller_id: sunsynk_esphome
@@ -308,15 +288,10 @@ sensor:
    accuracy_decimals: 2
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /100;
+           if (x > 32767) return (x - 65535) /100;
            else return (x) /100;
    #device_class: none
    state_class: measurement
-
-
-
    
  - platform: modbus_controller          # 154 Grid Inverter Voltage
    modbus_controller_id: sunsynk_esphome
@@ -328,9 +303,7 @@ sensor:
    accuracy_decimals: 1
    filters: #GOOD
      - lambda: |-
-           x = x / 1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /10;
+           if (x > 32767) return (x - 65535) /10;
            else return (x) /10;
    device_class: voltage
    state_class: measurement
@@ -345,14 +318,10 @@ sensor:
    accuracy_decimals: 1
    filters: #GOOD
      - lambda: |-
-           x = x / 1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /10;
+           if (x > 32767) return (x - 65535) /10;
            else return (x) /10;
    device_class: voltage
    state_class: measurement
-   
-
 
  - platform: modbus_controller          # 183 Battery Voltage
    modbus_controller_id: sunsynk_esphome
@@ -364,15 +333,10 @@ sensor:
    accuracy_decimals: 1
    filters: #GOOD
      - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) / 100;
+           if (x > 32767) return (x - 65535) / 100;
            else return x / 100;
-
    device_class: voltage
    state_class: measurement
-   
-
 
  - platform: modbus_controller          # 312 Battery Charge Voltage
    modbus_controller_id: sunsynk_esphome
@@ -385,14 +349,11 @@ sensor:
    filters: #GOOD
      - lambda: |-
            x = x / -1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - x + 65535) /100;
+           if (x > 32767) return (0 - x + 65535) /100;
            else return (0 - x) /100;
    device_class: voltage
    state_class: measurement
 
-   
-   
  - platform: modbus_controller          # 167 Grid Inverter Load
    modbus_controller_id: sunsynk_esphome
    name: "SS Grid Inverter Load"
@@ -403,15 +364,10 @@ sensor:
    accuracy_decimals: 0
    filters: #GOOD
      - lambda: |-
-           x = x / 1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
    device_class: power
    state_class: measurement
-
-
-
 
  - platform: modbus_controller          # 191 Battery Output Current
    modbus_controller_id: sunsynk_esphome
@@ -425,12 +381,8 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-          x = x / 1;
-          float MAX_VALUE = 32767;
-          if (x > MAX_VALUE) return (0 - x + 65535) /100;
+          if (x > 32767) return (0 - x + 65535) /100;
           else return (0 - x) /100;
-
-
 
  - platform: modbus_controller          # 182 Battery Temperature
    modbus_controller_id: sunsynk_esphome
@@ -444,12 +396,8 @@ sensor:
    state_class: measurement
    filters: # GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return ((x - 65535)-1000) / 10;
+           if (x > 32767) return ((x - 65535)-1000) / 10;
            else return ((x)-1000) / 10;
-
-
 
 # - platform: modbus_controller
 #   modbus_controller_id: sunsynk_esphome
@@ -476,9 +424,7 @@ sensor:
    state_class: measurement
    filters: # GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return ((x - 65535)-1000) / 10;
+           if (x > 32767) return ((x - 65535)-1000) / 10;
            else return ((x)-1000) / 10;
 
  - platform: modbus_controller          # 091 Radiator Temperature
@@ -493,9 +439,7 @@ sensor:
    state_class: measurement
    filters: # GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return ((x - 65535)-1000) / 10;
+           if (x > 32767) return ((x - 65535)-1000) / 10;
            else return ((x)-1000) / 10;
 
  - platform: modbus_controller          #076 Grid Import Day (Buy)
@@ -510,9 +454,7 @@ sensor:
    state_class: total_increasing
    filters: # GOOD
     - lambda: |-
-           x = x / 1;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) / 10;
+           if (x > 32767) return (x - 65535) / 10;
            else return x /10;
 
  - platform: modbus_controller          # 070 Battery Charge Day
@@ -528,10 +470,8 @@ sensor:
    filters: #GOOD
     - lambda: |-
            x = x / 10;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
-
 
  - platform: modbus_controller          # 071 Battery Discharge Day
    modbus_controller_id: sunsynk_esphome
@@ -546,10 +486,8 @@ sensor:
    filters: #GOOD
     - lambda: |-
            x = x / 10;
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
-
 
  - platform: modbus_controller          # 175 Inverter Output Power
    modbus_controller_id: sunsynk_esphome
@@ -562,13 +500,11 @@ sensor:
    device_class: power
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (0 - x + 65535) /-1;
+           if (x > 32767) return (0 - x + 65535) /-1;
            else return (0 - x) /-1;
 
 
-##### READ SETTINGS ################################################
+################################################ READ SETTINGS ################################################
  - platform: modbus_controller          # 250 Settings Timezone1
    modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Timezone1"
@@ -577,9 +513,7 @@ sensor:
    address: 250
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 251 Settings Timezone2
@@ -590,9 +524,7 @@ sensor:
    address: 251
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 252 Settings Timezone3
@@ -603,9 +535,7 @@ sensor:
    address: 252
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 253 Settings Timezone4
@@ -616,9 +546,7 @@ sensor:
    address: 253
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 254 Settings Timezone5
@@ -629,9 +557,7 @@ sensor:
    address: 254
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 255 Settings Timezone6
@@ -642,11 +568,8 @@ sensor:
    address: 255
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
-
 
  - platform: modbus_controller          # 268 Settings SoC Timezone1
    modbus_controller_id: sunsynk_esphome_settings
@@ -656,9 +579,7 @@ sensor:
    address: 268
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 269 Settings SoC Timezone2
@@ -669,9 +590,7 @@ sensor:
    address: 269
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 270 Settings SoC Timezone3
@@ -682,9 +601,7 @@ sensor:
    address: 270
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 271 Settings SoC Timezone4
@@ -695,9 +612,7 @@ sensor:
    address: 271
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 272 Settings SoC Timezone5
@@ -708,9 +623,7 @@ sensor:
    address: 272
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 273 Settings SoC Timezone6
@@ -721,12 +634,8 @@ sensor:
    address: 273
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
-
-
 
  - platform: modbus_controller          # 256 Settings Sell Mode Timezone1
    modbus_controller_id: sunsynk_esphome_settings
@@ -736,9 +645,7 @@ sensor:
    address: 256
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 257 Settings Sell Mode Timezone2
@@ -749,9 +656,7 @@ sensor:
    address: 257
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 258 Settings Sell Mode Timezone3
@@ -762,9 +667,7 @@ sensor:
    address: 258
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 259 Settings Sell Mode Timezone4
@@ -775,9 +678,7 @@ sensor:
    address: 259
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 260 Settings Sell Mode Timezone5
@@ -788,9 +689,7 @@ sensor:
    address: 260
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 261 Settings Sell Mode Timezone6
@@ -801,13 +700,8 @@ sensor:
    address: 261
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
-
-
-
 
  - platform: modbus_controller          # 274 Settings Grid Charge Timezone1
    modbus_controller_id: sunsynk_esphome_settings
@@ -851,9 +745,6 @@ sensor:
    register_type: holding
    address: 279
 
-
-
-
  - platform: modbus_controller          # 232 Settings Battery Grid Charge Enabled
    modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Battery Grid Charge Enabled"
@@ -883,8 +774,7 @@ sensor:
    address: 248
    filters: #GOOD
     - lambda: |-
-           if (x == 0) return (0);
-           else return (1);
+           return x-254;
 
  - platform: modbus_controller          # 244 Settings Load Limit
    modbus_controller_id: sunsynk_esphome_settings
@@ -892,7 +782,6 @@ sensor:
    id: sunsynk_esphome_setting_load_limit
    register_type: holding
    address: 244
-
            
  - platform: modbus_controller          # 245 Settings Export Limit
    modbus_controller_id: sunsynk_esphome_settings
@@ -905,9 +794,7 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
            
  - platform: modbus_controller          # 217 Settings Battery Shutdown
@@ -921,9 +808,7 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 219 Settings Battery Low
@@ -937,9 +822,7 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 218 Settings Battery Restart
@@ -953,9 +836,7 @@ sensor:
    state_class: measurement
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 210 Settings Battery Max Charge Current
@@ -969,9 +850,7 @@ sensor:
    unit_of_measurement: "A"   
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
  - platform: modbus_controller          # 211 Settings Battery Max Discharge Current
@@ -985,12 +864,9 @@ sensor:
    unit_of_measurement: "A"   
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
 
- 
  - platform: modbus_controller          # 230 Settings Grid Charge Current
    modbus_controller_id: sunsynk_esphome_settings
    name: "SSS Setting Grid Charge Current"
@@ -1002,7 +878,5 @@ sensor:
    unit_of_measurement: "A"   
    filters: #GOOD
     - lambda: |-
-
-           float MAX_VALUE = 32767;
-           if (x > MAX_VALUE) return (x - 65535) /1;
+           if (x > 32767) return (x - 65535) /1;
            else return (x) /1;           
