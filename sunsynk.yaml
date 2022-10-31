@@ -1,3 +1,6 @@
+# Once jinja templates are merged we can programatically enable/disable PV sensors with a boolean substitiution at the top of the script
+# see: https://github.com/esphome/esphome/discussions/3969#discussioncomment-4016197
+
 esphome:
   name: "sunsynk"
 
