@@ -14,7 +14,7 @@ substitutions:
   modbus_update_interval: "3s"
   settings_skipped_updates: "10"
   query_throttle: "50ms"
-
+  device_name: sunsynk
 
 #################################### STATIC SECTION ####################################
 wifi:
@@ -235,7 +235,7 @@ sensor:
     - lambda: |-
            if (x > 32767) return (x - 65535) /1;
            else return (x) /1;
-           
+
  - platform: modbus_controller          # 184 Battery Usable SOC
    modbus_controller_id: sunsynk_esphome
    name: "SS Battery Usable SOC"
@@ -249,8 +249,18 @@ sensor:
    filters: #GOOD
    # battery normally charges to 99%, shutdown level is 20%, so subtract 19 from value and calculate as percentage divided by 80
     - lambda: |-
-           if (x > 32767) return ((((x - 65535) -19) /80) *100) /1; 
-           else return (((x -19) /80) *100) /1;
+       
+           if (x > 32767) {
+              int y = ((((x - 65535) -19) /80) *100) /1; 
+              if (y > 100) return 100;
+              return y;
+           }
+           else {
+              int y = (((x -19) /80) *100) /1;
+              if (y > 100) return 100;
+              return y;
+           }
+          
 
  - platform: modbus_controller          # 216 Battery Charging Efficiency
    modbus_controller_id: sunsynk_esphome
@@ -488,9 +498,9 @@ sensor:
    state_class: total_increasing
    filters: #GOOD
     - lambda: |-
-           x = x / 1;
-           if (x > 32767) return (x - 65535) /100;
-           else return (x) /100;
+           x = x / 10;
+           if (x > 32767) return (x - 65535) /1;
+           else return (x) /1;
 
  - platform: modbus_controller          # 175 Inverter Output Power
    modbus_controller_id: sunsynk_esphome
