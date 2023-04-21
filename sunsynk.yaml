@@ -11,7 +11,7 @@ esp32:
 
 #################################### GLOBALS ####################################
 substitutions:
-  modbus_update_interval: "3s"
+  modbus_update_interval: "5s"
   settings_skipped_updates: "10"
   query_throttle: "50ms"
   device_name: sunsynk
@@ -47,7 +47,9 @@ logger:
 
 # Enable Home Assistant API
 api:
-  password: !secret esphome_api_password
+#  password: !secret esphome_api_password
+  encryption:
+    key: !secret esphome_api_key
 
 # https://esphome.io/components/time.html#home-assistant-time-source
 time:
@@ -243,7 +245,7 @@ sensor:
    register_type: holding
    address: 184
    unit_of_measurement: "%"
-   accuracy_decimals: 0
+   accuracy_decimals: 1
    device_class: battery
    state_class: measurement
    filters: #GOOD
@@ -260,7 +262,7 @@ sensor:
               if (y > 100) return 100;
               return y;
            }
-          
+
 
  - platform: modbus_controller          # 216 Battery Charging Efficiency
    modbus_controller_id: sunsynk_esphome
@@ -297,13 +299,13 @@ sensor:
    id: sunsynk_esphome_grid_frequency
    register_type: holding
    address: 79
-   unit_of_measurement: "hz"
+   unit_of_measurement: "Hz"
    accuracy_decimals: 2
    filters: #GOOD
     - lambda: |-
            if (x > 32767) return (x - 65535) /100;
            else return (x) /100;
-   #device_class: none
+   device_class: frequency
    state_class: measurement
    
  - platform: modbus_controller          # 154 Grid Inverter Voltage
@@ -849,6 +851,8 @@ binary_sensor:
    id: sunsynk_esphome_grid_connected_status
    register_type: holding
    address: 194
+
+
 
 
 
