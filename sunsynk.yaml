@@ -80,7 +80,7 @@ modbus_controller:
 
  
 sensor: 
- - platform: modbus_controller          #72 Battery Charge Total
+ - platform: modbus_controller          #72 and 73 Battery Charge Total unsigned 32 bit integer from 2 registers low word first
    modbus_controller_id: sunsynk_esphome
    name: "SS Battery Charge Total"
    id: sunsynk_esphome_battery_charge_total
@@ -90,13 +90,15 @@ sensor:
    accuracy_decimals: 1
    device_class: energy
    state_class: total_increasing
+   value_type: U_DWORD_R
    filters:
-    - lambda: |-
-           x = x / -1;
-           if (x > 32767) return (0 - x + 65535) /10;
-           else return (0 - x) /10;
+    - multiply: 0.1
+   # - lambda: |-
+   #        x = x / -1;
+   #        if (x > 32767) return (0 - x + 65535) /10;
+   #        else return (0 - x) /10;
 
- - platform: modbus_controller          #74 Battery Discharge Total
+ - platform: modbus_controller          #74 and 75 Battery Discharge Total unsigned 32 bit integer from 2 registers low word first
    modbus_controller_id: sunsynk_esphome
    name: "SS Battery Discharge Total"
    id: sunsynk_esphome_battery_discharge_total
@@ -106,12 +108,14 @@ sensor:
    accuracy_decimals: 0
    device_class: energy
    state_class: total_increasing
+   value_type: U_DWORD_R
    filters:
-    - lambda: |-
-           if (x > 32767) return (x - 65535) /10;
-           else return (x) /10;
+    - multiply: 0.1
+  #  - lambda: |-
+  #         if (x > 32767) return (x - 65535) /10;
+  #         else return (x) /10;
 
-# - platform: modbus_controller          # 81 Grid Export Total (Sell)
+# - platform: modbus_controller          # 81 abd 82 Grid Export Total (Sell) unsigned 32 bit integer from 2 registers low word first
 #   modbus_controller_id: sunsynk_esphome
 #   name: "SS Grid Export Total (Sell)"
 #   id: sunsynk_esphome_grid_export_total_sell
@@ -121,12 +125,15 @@ sensor:
 #   accuracy_decimals: 2
 #   device_class: energy
 #   state_class: total_increasing
+#   value_type: U_DWORD_R
 #   filters:
-#    - lambda: |-
-#           if (x > 32767) return (x - 65535) / 10;
-#           else return x /10;
+#     - multiply: 0.1
+##    - lambda: |-
+##           if (x > 32767) return (x - 65535) / 10;
+##           else return x /10;
 
- - platform: modbus_controller          # 78 Grid Import Total (Buy)
+ - platform: modbus_controller          # 78 and 80 Grid Import Total (Buy) unsigned 32 bit integer from 2 registers low word first
+ #There is one parameter (Grid Import Total) where the values aren't on consecutive registers - 78 and 80. I don't know how to configure this & would need to read up in more detail.
    modbus_controller_id: sunsynk_esphome
    name: "SS Grid Import Total (Buy)"
    id: sunsynk_esphome_grid_import_total_buy
@@ -142,7 +149,7 @@ sensor:
            if (x > 32767) return (0 - x + 65535) /1;
            else return (0 - x) /1;
 
- - platform: modbus_controller          # 85 Load Power Total
+ - platform: modbus_controller          # 85 and 86 Load Power Total unsigned 32 bit integer from 2 registers low word first
    modbus_controller_id: sunsynk_esphome
    name: "SS Load Power Total"
    id: sunsynk_esphome_load_power_total
@@ -152,10 +159,11 @@ sensor:
    accuracy_decimals: 0
    device_class: energy
    state_class: total_increasing
-   filters: #GOOD
-    - lambda: |-
-           if (x > 32767) return (0 - x + 65535) /1;
-           else return (0 - x) /1;
+   value_type: U_DWORD_R
+   #filters: #GOOD
+   # - lambda: |-
+   #        if (x > 32767) return (0 - x + 65535) /1;
+   #        else return (0 - x) /1;
 
 
 # - platform: modbus_controller
@@ -181,10 +189,11 @@ sensor:
    accuracy_decimals: 0
    device_class: power
    state_class: measurement
-   filters: #GOOD
-    - lambda: |-
-           if (x > 32767) return (x - 65535) /1;
-           else return (x) /1;
+   value_type: S_WORD
+   #filters: #GOOD
+   # - lambda: |-
+   #        if (x > 32767) return (x - 65535) /1;
+   #        else return (x) /1;
 
  - platform: modbus_controller          # 178 Load Power
    modbus_controller_id: sunsynk_esphome
@@ -196,10 +205,11 @@ sensor:
    accuracy_decimals: 0
    device_class: power
    state_class: measurement
-   filters: #GOOD
-    - lambda: |-
-           if (x > 32767) return (x - 65535) /1;
-           else return (x) /1;
+   value_type: S_WORD
+   #filters: #GOOD
+   # - lambda: |-
+   #        if (x > 32767) return (x - 65535) /1;
+   #        else return (x) /1;
 
 # - platform: modbus_controller
 #   modbus_controller_id: sunsynk_esphome
@@ -377,10 +387,11 @@ sensor:
    address: 167
    unit_of_measurement: "W"
    accuracy_decimals: 0
-   filters: #GOOD
-     - lambda: |-
-           if (x > 32767) return (x - 65535) /1;
-           else return (x) /1;
+   #filters: #GOOD
+   #  - lambda: |-
+   #        if (x > 32767) return (x - 65535) /1;
+   #        else return (x) /1;
+   value_type: S_WORD
    device_class: power
    state_class: measurement
 
@@ -394,10 +405,12 @@ sensor:
    accuracy_decimals: 1
    device_class: current
    state_class: measurement
+   value_type: S_WORD
    filters: #GOOD
-    - lambda: |-
-          if (x > 32767) return (0 - x + 65535) /100;
-          else return (0 - x) /100;
+     - multiply: 0.01
+  #  - lambda: |-
+  #        if (x > 32767) return (0 - x + 65535) /100;
+  #        else return (0 - x) /100;
 
  - platform: modbus_controller          # 182 Battery Temperature
    modbus_controller_id: sunsynk_esphome
@@ -513,10 +526,11 @@ sensor:
    unit_of_measurement: "W"
    accuracy_decimals: 1
    device_class: power
-   filters: #GOOD
-    - lambda: |-
-           if (x > 32767) return (0 - x + 65535) /-1;
-           else return (0 - x) /-1;
+   value_type: S_WORD
+   #filters: #GOOD
+   # - lambda: |-
+   #        if (x > 32767) return (0 - x + 65535) /-1;
+   #        else return (0 - x) /-1;
 
 
 ################################################ READ SETTINGS ################################################
