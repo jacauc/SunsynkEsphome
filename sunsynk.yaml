@@ -983,11 +983,10 @@ text_sensor:
    lambda: |- # It is not clear what each of these states mean. TODO Fill in the string values once known
       uint16_t value = modbus_controller::word_from_hex_str(x, 0);
       switch (value) {
-        case 0: return std::string("0");
-        case 1: return std::string("1");
-        case 2: return std::string("2");
-        case 3: return std::string("3");
-        case 4: return std::string("4");
-        case 5: return std::string("5");
+        case 0: return std::string("Standby");
+        case 1: return std::string("Selftest");
+        case 2: return std::string("Normal");
+        case 3: return std::string("Alarm");
+        case 4: return std::string("Fault");
         default: return std::string("Unknown");
       }
