@@ -261,7 +261,6 @@ sensor:
    filters: #GOOD
    # battery normally charges to 99%, shutdown level is 20%, so subtract 19 from value and calculate as percentage divided by 80
     - lambda: |-
-       
            if (x > 32767) {
               int y = ((((x - 65535) -19) /80) *100) /1; 
               if (y > 100) return 100;
@@ -856,7 +855,6 @@ sensor:
            else return (x) /1;           
 
 
-
 ############################################### BINARY SENSORS ###############################################
 binary_sensor:
  - platform: modbus_controller          # 194 Grid Connected Status
@@ -865,10 +863,6 @@ binary_sensor:
    id: sunsynk_esphome_grid_connected_status
    register_type: holding
    address: 194
-
-
-
-
 
 ############################################### BINARY SENSORS SETTINGS ###############################################  
 
@@ -880,14 +874,6 @@ binary_sensor:
    skip_updates: ${settings_skipped_updates}
    address: 248
    bitmask: 1
-
- - platform: modbus_controller          # 244 Settings Load Limit Enabled
-   modbus_controller_id: sunsynk_esphome
-   name: "SSS Setting Load Limit Enabled"
-   id: sunsynk_esphome_setting_load_limit2
-   register_type: holding
-   skip_updates: ${settings_skipped_updates}
-   address: 244
 
  - platform: modbus_controller          # 274 Settings Grid Charge Timezone1
    modbus_controller_id: sunsynk_esphome
@@ -972,6 +958,25 @@ text_sensor:
         default: return std::string("Unknown");
       }
 
+
+ - platform: modbus_controller   # 244 Settings Load Limit Enabled
+   modbus_controller_id: sunsynk_esphome
+   name: "SSS Setting Load Limit Enabled"
+   id: sunsynk_esphome_setting_load_limit
+   register_type: holding
+   skip_updates: ${settings_skipped_updates}
+   address: 244
+   raw_encode: HEXBYTES
+   lambda: |-
+     uint16_t value = modbus_controller::word_from_hex_str(x, 0);
+     switch (value) {
+       case 0: return std::string("Selling First");
+       case 1: return std::string("Zero Export and Limit to Load Only");
+       case 2: return std::string("Zero Export");
+       default: return std::string("Unknown");
+     }
+     return x;
+
  - platform: modbus_controller          # 059 Overall State
    modbus_controller_id: sunsynk_esphome
    name: "SS Overall State"
@@ -980,7 +985,7 @@ text_sensor:
    skip_updates: ${settings_skipped_updates}
    raw_encode: HEXBYTES
    address: 59
-   lambda: |- # It is not clear what each of these states mean. TODO Fill in the string values once known
+   lambda: |- 
       uint16_t value = modbus_controller::word_from_hex_str(x, 0);
       switch (value) {
         case 0: return std::string("Standby");
