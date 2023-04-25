@@ -69,7 +69,8 @@ uart:
 modbus:
  id: sunsynk_modbus
  flow_control_pin: 4
- 
+
+
 modbus_controller:
  - id: sunsynk_esphome
    address: 0x01
@@ -78,7 +79,6 @@ modbus_controller:
    update_interval: ${modbus_update_interval}
    command_throttle: ${query_throttle}
 
- 
 sensor: 
  - platform: modbus_controller          #72 and 73 Battery Charge Total unsigned 32 bit integer from 2 registers low word first
    modbus_controller_id: sunsynk_esphome
@@ -93,10 +93,6 @@ sensor:
    value_type: U_DWORD_R
    filters:
     - multiply: 0.1
-   # - lambda: |-
-   #        x = x / -1;
-   #        if (x > 32767) return (0 - x + 65535) /10;
-   #        else return (0 - x) /10;
 
  - platform: modbus_controller          #74 and 75 Battery Discharge Total unsigned 32 bit integer from 2 registers low word first
    modbus_controller_id: sunsynk_esphome
@@ -111,9 +107,7 @@ sensor:
    value_type: U_DWORD_R
    filters:
     - multiply: 0.1
-  #  - lambda: |-
-  #         if (x > 32767) return (x - 65535) /10;
-  #         else return (x) /10;
+
 
 # - platform: modbus_controller          # 81 abd 82 Grid Export Total (Sell) unsigned 32 bit integer from 2 registers low word first
 #   modbus_controller_id: sunsynk_esphome
@@ -160,24 +154,36 @@ sensor:
    device_class: energy
    state_class: total_increasing
    value_type: U_DWORD_R
-   #filters: #GOOD
-   # - lambda: |-
-   #        if (x > 32767) return (0 - x + 65535) /1;
-   #        else return (0 - x) /1;
 
 
-# - platform: modbus_controller
-#   modbus_controller_id: sunsynk_esphome
-#   name: "SS Total PV Power (kWh)"
-#   id: sunsynk_esphome_total_pv_power_kwh
-#   register_type: holding
-#   address: 96
-#   unit_of_measurement: "kWh"
-#   accuracy_decimals: 2
-#   device_class: energy
-#   state_class: total_increasing
-#   filters:
-#     - multiply: 0.1
+ - platform: modbus_controller          # 164 Inverter Output Current
+   modbus_controller_id: sunsynk_esphome
+   name: "SS Inverter Output Current"
+   id: sunsynk_esphome_inverter_output_current
+   register_type: holding
+   address: 164
+   unit_of_measurement: "A"
+   accuracy_decimals: 1
+   device_class: current
+   state_class: measurement
+   value_type: S_WORD
+   filters: #GOOD
+     - multiply: 0.01
+
+
+ - platform: modbus_controller          # 166 Aux Output Power
+   modbus_controller_id: sunsynk_esphome
+   name: "SS Aux Output Power"
+   id: sunsynk_esphome_aux_output_power
+   register_type: holding
+   address: 166
+   unit_of_measurement: "W"
+   accuracy_decimals: 0
+   device_class: power
+   state_class: measurement
+   value_type: S_WORD
+
+
 
  - platform: modbus_controller          # 169 Grid Power
    modbus_controller_id: sunsynk_esphome
@@ -190,10 +196,20 @@ sensor:
    device_class: power
    state_class: measurement
    value_type: S_WORD
-   #filters: #GOOD
-   # - lambda: |-
-   #        if (x > 32767) return (x - 65535) /1;
-   #        else return (x) /1;
+
+
+ - platform: modbus_controller          # 172 Grid External Power
+   modbus_controller_id: sunsynk_esphome
+   name: "SS Grid External Power"
+   id: sunsynk_esphome_grid_external_power
+   register_type: holding
+   address: 172
+   unit_of_measurement: "W"
+   accuracy_decimals: 0
+   device_class: power
+   state_class: measurement
+   value_type: S_WORD
+
 
  - platform: modbus_controller          # 178 Load Power
    modbus_controller_id: sunsynk_esphome
@@ -206,32 +222,41 @@ sensor:
    device_class: power
    state_class: measurement
    value_type: S_WORD
-   #filters: #GOOD
-   # - lambda: |-
-   #        if (x > 32767) return (x - 65535) /1;
-   #        else return (x) /1;
 
-# - platform: modbus_controller
-#   modbus_controller_id: sunsynk_esphome
-#   name: "SS PV1 Power"
-#   id: sunsynk_esphome_pv1_power
-#   register_type: holding
-#   address: 186
-#   unit_of_measurement: "W"
-#   accuracy_decimals: 2
-#   device_class: power
-#   state_class: measurement
+
+ - platform: modbus_controller          # 186 PV1 Power
+   modbus_controller_id: sunsynk_esphome
+   name: "SS PV1 Power"
+   id: sunsynk_esphome_pv1_power
+   register_type: holding
+   address: 186
+   unit_of_measurement: "W"
+   accuracy_decimals: 0
+   device_class: power
+   state_class: measurement
    
-# - platform: modbus_controller
-#   modbus_controller_id: sunsynk_esphome
-#   name: "SS PV2 Power"
-#   id: sunsynk_esphome_pv2_power
-#   register_type: holding
-#   address: 187
-#   unit_of_measurement: "W"
-#   accuracy_decimals: 2
-#   device_class: power
-#   state_class: measurement
+ - platform: modbus_controller          # 187 PV2 Power
+   modbus_controller_id: sunsynk_esphome
+   name: "SS PV2 Power"
+   id: sunsynk_esphome_pv2_power
+   register_type: holding
+   address: 187
+   unit_of_measurement: "W"
+   accuracy_decimals: 0
+   device_class: power
+   state_class: measurement
+
+ - platform: template                   # Sum of PV1 and PV2 to get total PV Power
+   name: "SS Total Solar"
+   unit_of_measurement: "W"
+   accuracy_decimals: 0
+   device_class: power
+   state_class: measurement
+   lambda: |-
+     return (id(sunsynk_esphome_pv1_power).state + id(sunsynk_esphome_pv2_power).state)/2;
+   update_interval: 5s
+
+
 
  - platform: modbus_controller          # 184 Battery SOC
    modbus_controller_id: sunsynk_esphome
@@ -295,7 +320,7 @@ sensor:
    register_type: holding
    address: 13
 
- - platform: modbus_controller          # 013 Firmware Comms Board
+ - platform: modbus_controller          # 014 Firmware Comms Board
    modbus_controller_id: sunsynk_esphome
    name: "SS Firmware Comms Board"
    id: sunsynk_esphome_firmware_comms_board
@@ -378,21 +403,29 @@ sensor:
    device_class: voltage
    state_class: measurement
 
- - platform: modbus_controller          # 167 Grid Inverter Load
+ - platform: modbus_controller          # 167 Grid Inverter Load - Don't use 167 - rather use 169 which is the total - Keeping this code here for now to avoid breaking the power flow card
    modbus_controller_id: sunsynk_esphome
    name: "SS Grid Inverter Load"
    id: sunsynk_esphome_grid_inverter_load
    register_type: holding
-   address: 167
+   address: 169
    unit_of_measurement: "W"
    accuracy_decimals: 0
-   #filters: #GOOD
-   #  - lambda: |-
-   #        if (x > 32767) return (x - 65535) /1;
-   #        else return (x) /1;
    value_type: S_WORD
    device_class: power
    state_class: measurement
+
+ - platform: modbus_controller          # 190 Battery Output Power
+   modbus_controller_id: sunsynk_esphome
+   name: "SS Battery Output Power"
+   id: sunsynk_esphome_battery_output_power
+   register_type: holding
+   address: 190
+   unit_of_measurement: "W"
+   accuracy_decimals: 1
+   device_class: power
+   state_class: measurement
+   value_type: S_WORD
 
  - platform: modbus_controller          # 191 Battery Output Current
    modbus_controller_id: sunsynk_esphome
@@ -407,9 +440,21 @@ sensor:
    value_type: S_WORD
    filters: #GOOD
      - multiply: 0.01
-  #  - lambda: |-
-  #        if (x > 32767) return (0 - x + 65535) /100;
-  #        else return (0 - x) /100;
+
+ - platform: modbus_controller          # 192 Load Frequency
+   modbus_controller_id: sunsynk_esphome
+   name: "SS Load Frequency"
+   id: sunsynk_esphome_load_frequency
+   register_type: holding
+   address: 192
+   unit_of_measurement: "Hz"
+   accuracy_decimals: 2
+   filters: #GOOD
+    - lambda: |-
+           if (x > 32767) return (x - 65535) /100;
+           else return (x) /100;
+   device_class: frequency
+   state_class: measurement
 
  - platform: modbus_controller          # 182 Battery Temperature
    modbus_controller_id: sunsynk_esphome
@@ -526,10 +571,17 @@ sensor:
    accuracy_decimals: 1
    device_class: power
    value_type: S_WORD
-   #filters: #GOOD
-   # - lambda: |-
-   #        if (x > 32767) return (0 - x + 65535) /-1;
-   #        else return (0 - x) /-1;
+
+
+ - platform: template                   # Calculate Essential Load
+   name: "SS Essential Load"
+   unit_of_measurement: "W"
+   accuracy_decimals: 0
+   device_class: power
+   state_class: measurement
+   lambda: |-
+     return abs(int(round((float(id(sunsynk_esphome_inverter_output_power).state) - float(id(sunsynk_esphome_aux_output_power).state) - float(id(sunsynk_esphome_grid_inverter_load).state)))));
+   update_interval: 5s
 
 
 ################################################ READ SETTINGS ################################################
@@ -970,10 +1022,10 @@ text_sensor:
    lambda: |-
      uint16_t value = modbus_controller::word_from_hex_str(x, 0);
      switch (value) {
-       case 0: return std::string("Selling First");
-       case 1: return std::string("Zero Export and Limit to Load Only");
-       case 2: return std::string("Zero Export");
-       default: return std::string("Unknown");
+       case 0: return std::string("selling first");
+       case 1: return std::string("zero export and limit to load only");
+       case 2: return std::string("zero export");
+       default: return std::string("unknown");
      }
      return x;
 
@@ -988,10 +1040,10 @@ text_sensor:
    lambda: |- 
       uint16_t value = modbus_controller::word_from_hex_str(x, 0);
       switch (value) {
-        case 0: return std::string("Standby");
-        case 1: return std::string("Selftest");
-        case 2: return std::string("Normal");
-        case 3: return std::string("Alarm");
-        case 4: return std::string("Fault");
-        default: return std::string("Unknown");
+        case 0: return std::string("standby");
+        case 1: return std::string("selftest");
+        case 2: return std::string("normal");
+        case 3: return std::string("alarm");
+        case 4: return std::string("fault");
+        default: return std::string("unknown");
       }
